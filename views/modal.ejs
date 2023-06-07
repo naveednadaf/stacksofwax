@@ -1,0 +1,84 @@
+<!-- First Modal -->
+<div class="modal fade" id="exampleModal_<%= album_id %>" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add to Collection</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <form method="POST" id="new_playlist" action="/addBtn">
+          <% if(isEmpty){ %>
+          <div class="modal-body">
+              <p>You haven't created any collection
+                All your collection will show up here</p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#collectionModal_<%= album_id %>">+ New Colletion</button>
+          </div>
+          <% } else { %>
+            <div class="modal-body">
+            <label for="list">My Collection List</label>
+            <select class="form-select" name="playlist" required >
+              <% playlist_names.forEach((item)=>{ %>
+                <option value="<%= item.playlist_id %>">
+                  <%= item.playlist_title %>
+                </option>
+                <% }) %>
+            </select>
+            <div class="alert alert-danger mt-3 d-none" id="alert-message">
+              Album already exists in the selected playlist!
+          </div>
+        </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-primary" type="submit" name="add" id="add-btn">+
+          Add</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#collectionModal_<%= album_id %>">+ New Colletion</button>
+      </div>
+      <% } %>
+      <input type="hidden" name="album_id" value="<%= album_id %>">
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--collection creation Modal -->
+<div class="modal fade" id="collectionModal_<%= album_id %>" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">New Collection</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+    </div>
+    <form method="POST" id="submit" action="/createPlaylist">
+      <input type="hidden" name="album_id" value="<%= album_id %>">
+      <div class="name p-3">
+        <input type="text" class="form-control" id="name" placeholder="Title*"
+          name="collection_name" required>
+      </div>
+      <div class="desc p-3">
+        <textarea class="form-control" id="description" rows="3" placeholder="Description"
+          name="collection_desc"></textarea>
+      </div>
+      <div class="privacy px-3 pb-3">
+        <label for="privacy">Privacy*</label>
+        <select class="form-select" name="privacy" required>
+          <option value="0">Public</option>
+          <option value="1">Private</option>
+        </select>
+      </div>
+      <div class="modal-footer d-flex align-items-center">
+        <button type="button" class="btn btn-secondary"
+          data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary"> + Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+

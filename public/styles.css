@@ -1,0 +1,199 @@
+/* start of footer styling */
+html {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
+}
+footer {
+    margin-top: auto;
+} 
+/* end of footer styling */
+/* start of nav bar styling */
+.navbar {
+    height: 80px;
+}
+
+.log_sign_link {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-group {
+    padding-top: 20px;
+}
+
+.signbtn {
+    padding-top: 20px;
+}
+
+._question {
+    padding-top: 10px;
+}
+
+.dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
+}
+.logo {
+    height: auto;
+    width: 60px;
+}
+#navbarNav {
+    z-index: +1;
+}
+/* end of nav bar styling */
+/* start of card styling */
+.arrow_btn {
+    text-align: right;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.card-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.album_link {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+}
+/* end of card styling */
+/* start of album styling */
+.card-img {
+    max-height: 590px;
+    width: auto;
+}
+.second_card{
+    max-height: 590px;
+    overflow: auto;
+}
+
+.album_title {
+    margin: 0px;
+}
+/* start of album styling */
+/* start of playlist styling */
+
+.btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.playlist_image {
+    height: 250px;
+    width: auto;
+}
+
+.table .thumbnail img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+
+.card-small {
+    width: 200px;
+    height: 300px;
+}
+
+.btn-custom {
+    cursor: default !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+
+.image-container img {
+    object-fit: cover;
+    overflow: hidden;
+    height: auto;
+    width: 500px;
+}
+
+.playlist-cover img {
+    width: 100%;
+}
+/* end of playlist styling */
+/* start of collection styling */
+.card-containers {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px;
+    padding: 15px;
+    width: calc(100% / 4);
+    box-sizing: border-box;
+  }
+.thumb_img{
+    width: 80px;
+    height: auto;
+}
+.likes{
+    width: 50px;
+}
+/* end of collection styling */
+
+/* start of responsive styling */
+@media (max-width: 800px) {
+    .container-fluid {
+        padding: 0;
+        padding-top: 0px;
+    }
+
+    #navbarNav {
+        background-color: #212529 !important;
+        color: #fff !important;
+        padding: 15px 25px;
+    }
+
+    .carousel-item .card-containter {
+        flex-basis: 33.33%;
+        max-width: 33.33%;
+        padding-top: auto;
+    }
+
+    .card-title {
+        font-size: 10px;
+        font-weight: 500;
+    }
+
+    .card-text {
+        font-size: 8px;
+        font-weight: 200;
+    }
+
+    .paylist-cover {
+        width: auto;
+        padding-bottom: 20px;
+    }
+    .playlist_row{
+        padding-top: 0px !important;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
+/* start of responsive styling */

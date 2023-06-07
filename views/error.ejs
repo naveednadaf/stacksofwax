@@ -1,0 +1,21 @@
+<%- include('header')%>
+    <%- include('navbar', {loggedIn: loggedIn}) %>
+    <div class="d-flex justify-content-center align-items-center">
+    <div class="card">
+        <div class="card-body">
+          <div class="alert alert-danger" role="alert">
+            <i class="fa-solid fa-circle-exclamation"></i> <%= errorMessage %>
+          </div>
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-center">
+          <button type="button" class="btn btn-secondary" onclick="goBack()" >Go Back</button>
+        </div>
+    </div>   
+    </div>
+    <!-- script to make it go back to previous page-->
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+<%- include('footer')%>
