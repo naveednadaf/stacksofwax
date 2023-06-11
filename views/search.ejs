@@ -1,0 +1,94 @@
+<%- include('header')%>
+    <%- include('navbar', {loggedIn: loggedIn}) %>
+    <!-- Fileter section-->
+        <div class="page container">
+            <div class="row mt-5 ">
+            <div class="col-md-2">  
+                Filters
+                <div class="card-containter">
+                    <div class="card p-3">
+                        <form method="POST" action="/search" >
+                            <div class="header sticky-top bg-white "><button type="submit" class="btn btn-primary">Filter</button>
+                            <hr >
+                            </div>
+                            <input type="hidden" name="searchtxt" value="<%=convertedText%>">
+                            <p> Genre </p>
+                            <div class="genre-list-container overflow-auto" style="max-height: 300px;">
+                            <% filter_list.genre.forEach((item)=>{ %> 
+                                <div class="form-check pb-3">
+                                    <input class="form-check-input" type="checkbox" value="<%= item %>" name="genre">
+                                       <label class="form-check-label" >
+                                        <%=item%>
+                                    </label>
+                                </div>  
+                            <% }) %>
+                            </div>
+                            <p> Format </p>
+                            <div class="format-list-container overflow-auto" style="max-height: 300px;">
+                            <% filter_list.format.forEach((item)=>{ %> 
+                                <div class="form-check pb-3">
+                                    <input class="form-check-input" type="checkbox" value="<%=item%>" name="format">
+                                    <label class="form-check-label" >
+                                        <%= item %>
+                                    </label>
+                                </div>  
+                            <% }) %>
+                            </div>
+                            <hr>
+                            <p> Year </p>
+                            <div class="year-list-container overflow-auto" style="max-height: 300px;">
+                            <% filter_list.year.forEach((item)=>{ %> 
+                                <div class="form-check pb-3">
+                                    <input class="form-check-input" type="checkbox" value="<%= item %>" name="year">
+                                    <label class="form-check-label" >
+                                        <%= item %>
+                                    </label>
+                                </div>  
+                            <% }) %>
+                            </div>
+                        </form>                       
+                    </div> 
+                </div>
+            </div>
+            <!-- Search result section --> 
+            <div class="col-md-10 m-0">
+            <p>
+                Search Results...
+            </p>
+                <div class="row"> 
+                <% search_results.forEach((item) => { %>                        
+                    <div class="col-md-2 card-containter p-2 m-2  ">
+                        <div class="card h-100 p-0 m-0 ">
+                            <img src="<%= item.img_url %>" class="card-img" alt="...">
+                            <% if (loggedIn) { %>
+                                <div class="position-absolute top-0 end-0 p-2">
+                                    <button type="button" class="btn btn-xs" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal_<%= item.album_id %>" data-album-id="<%= item.album_id %>">
+                                        <svg width="24" height="24" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="11" stroke="#fff" fill="transparent"
+                                                stroke-width="2" />
+                                            <path d="M12 6v12M6 12h12" stroke="#fff" stroke-width="2" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <%- include('modal',{isEmpty: isEmpty , playlist_names: playlist_names ,album_id:
+                                    item.album_id})%>
+                                    <% } %>
+                                        <div class="card-body">
+                                            <a href="/album?id=<%=item.album_id%>" class="album_link block-inline">
+                                                <h5 class="card-title">
+                                                    <%= item.title %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= item.artist_name %>
+                                                </p>
+                                            </a>
+                                        </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+        </div>
+<%- include('footer')%>

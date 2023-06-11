@@ -1,0 +1,244 @@
+<%- include('header')%>
+  <%- include('navbar', {loggedIn: loggedIn}) %>
+  <!-- Quick Picks Carrousel -->
+    <div class="picks_carrsoel">
+      <section class="pt-5 pb-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-6">
+              <h3 class="mb-3">Quick Picks</h3>
+            </div>
+            <div class="col-6 text-right arrow_btn">
+              <a class="btn btn-primary mb-3 mr-1 float-right" href="#carouselExampleIndicators2" role="button"
+                data-slide="prev">
+                <i class="fa fa-arrow-left"></i>
+              </a>
+              <a class="btn btn-primary mb-3 float-right" href="#carouselExampleIndicators2" role="button"
+                data-slide="next">
+                <i class="fa fa-arrow-right"></i>
+              </a>
+            </div>
+            <div class="col-12">
+              <div id="carouselExampleIndicators2" class="carousel" data-interval="false">
+                <div class="carousel-inner">
+                  <!-- calculating the number of slides to display -->
+                  <% 
+                  var cardsPerSlide = 6;
+                  var maxCards = 25;
+                  var numSlides = Math.ceil(Math.min(charts_title.length, maxCards) / cardsPerSlide);
+                  
+                  for (var slide = 0; slide < numSlides; slide++) {
+                    var start = slide * cardsPerSlide;
+                    var end = Math.min(start + cardsPerSlide, maxCards);
+
+                    var titles = charts_title.slice(start, end);
+                    var isActive = slide === 0 ? 'active' : '';
+                    %>
+                    <div class="carousel-item <%= isActive %>">
+                      <div class="row">
+                        <% titles.forEach((item, index)=> {
+                          var title = titles[index].title;
+                          var artist_name = titles[index].artist_name;
+                          var album_id = titles[index].album_id;
+                          %>
+                          <div class="col-2 card-containter">
+                            <div class="card h-100  ">
+                              <img src="<%= item.img_url %>" class="card-img-top" alt="...">
+                              <% if (loggedIn) { %>
+                                <div class="position-absolute top-0 end-0 p-2">
+                                  <button type="button" class="btn btn-xs" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal_<%= album_id %>" data-album-id="<%= album_id %>">
+                                    <svg width="24" height="24" viewBox="0 0 24 24">
+                                      <circle cx="12" cy="12" r="11" stroke="#fff" fill="transparent"
+                                        stroke-width="2" />
+                                      <path d="M12 6v12M6 12h12" stroke="#fff" stroke-width="2" />
+                                    </svg>
+                                  </button>
+                                </div>
+                                <%- include('modal',{isEmpty: isEmpty , playlist_names: playlist_names ,album_id:
+                                  album_id})%>
+                                  <% } %>
+                                    <div class="card-body">
+                                      <a href="/album?id=<%=album_id%>" class="album_link block-inline">
+                                        <h5 class="card-title">
+                                          <%= title %>
+                                        </h5>
+                                        <p class="card-text">
+                                          <%= artist_name %>
+                                        </p>
+                                      </a>
+                                    </div>
+                            </div>
+                          </div>
+                          <% }) %>
+                      </div>
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Top Playlist Carrousel -->
+    <div class="playlist_container mb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="mb-3">Top Collections</h3>
+          </div>
+          <div class="col-6 text-right arrow_btn">
+            <a class="btn btn-primary mb-3 mr-1 float-right" href="#playlistCarousel" role="button" data-slide="prev">
+              <i class="fa fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-primary mb-3 float-right" href="#playlistCarousel" role="button" data-slide="next">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="col-12">
+            <div id="playlistCarousel" class="carousel" data-interval="false">
+              <div class="carousel-inner">
+                <!-- calculating the number of slides to display -->
+                <%
+                  var num_items = 8;
+                  var max_playlist = 20;
+                  var slides = Math.ceil(max_playlist / num_items);
+
+                  for (var i = 0; i < slides; i++) {
+                    var start_index = i * num_items;
+                    var end_index = Math.min(start_index + num_items, max_playlist);
+                    var items = topplaylist.slice(start_index, end_index);
+                    var is_active = i === 0 ? 'active' : '';
+                %>
+                  <div class="carousel-item <%= is_active %>">
+                    <div class="row">
+                      <div class=" col-md-6">
+                        <table class="table m-1">
+                          <tbody>
+                      <% items.forEach((item, index)=>{
+                        var title = items[index].playlist_title;
+                        var user = items[index].playlist_user;
+                        var likes = items[index].playlist_like;
+                        var id = items[index].playlist_id; 
+                        var url = items[index].img_url; %>
+                                <tr>
+                                  <td class="thumbnail rounded float-left thumb_img" alt="...">
+                                    <a href="/playlist?id=<%=id%>"
+                                      class="album_link block-inline">
+                                      <img src="<%=url%>">
+                                    </a>
+                                  </td>
+                                  <td>
+                                    <a href="/playlist?id=<%=id%>" class="album_link ">
+                                    <%= title %>
+                                      <p>By <%= user %>
+                                      </p>
+                                    </a>
+                                  </td>
+                                  <td class="float-right likes">
+                                    <i class="fa-solid fa-heart"></i> <%= likes || "0" %>
+                                  </td>
+                                </tr>  
+                                <% if (index === 3) { %>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="col-md-6 playlist-col">
+                              <table class="table m-1">
+                                <tbody>
+                              <% } %>
+                        <% }) %>
+                      </tbody>
+                    </table>
+                </div>
+                    </div>
+                  </div>
+                  <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Most Collected -->
+    <div class="collected_container mb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="mb-3">Most Collected</h3>
+          </div>
+          <div class="col-6 text-right arrow_btn">
+            <a class="btn btn-primary mb-3 mr-1 float-right" href="#most_collected_indicator" role="button"
+              data-slide="prev">
+              <i class="fa fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-primary mb-3 float-right" href="#most_collected_indicator" role="button"
+              data-slide="next">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="col-12">
+            <div id="most_collected_indicator" class="carousel" data-interval="false">
+              <div class="carousel-inner">
+                <!-- calculating the number of slides to display -->
+                <% 
+                var cardsPerSlide = 6;
+                var maxCards = 25;
+                var numSlides = Math.ceil(Math.min(chart_most_collected.length, maxCards) / cardsPerSlide);
+                
+                for (var slide = 0; slide < numSlides; slide++) {
+                  var start = slide * cardsPerSlide;
+                  var end = Math.min(start + cardsPerSlide, maxCards);
+                  var titles = chart_most_collected.slice(start, end);
+                  var isActive = slide === 0 ? 'active' : '';
+                  %>
+                  <div class="carousel-item <%= isActive %>">
+                    <div class="row">
+                      <% titles.forEach((item, index)=> {
+                        var title = titles[index].title;
+                        var artist_name = titles[index].artist_name;
+                        var album_id = titles[index].album_id;
+                        %>
+                        <div class="col-2 card-containter">
+                          <div class="card h-100  ">
+                            <img src="<%= item.img_url %>" class="card-img-top" alt="...">
+                            <% if (loggedIn) { %>
+                              <div class="position-absolute top-0 end-0 p-2">
+                                <button type="button" class="btn btn-xs" data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal_<%= album_id %>" data-album-id="<%= album_id %>">
+                                  <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="11" stroke="#fff" fill="transparent"
+                                      stroke-width="2" />
+                                    <path d="M12 6v12M6 12h12" stroke="#fff" stroke-width="2" />
+                                  </svg>
+                                </button>
+                              </div>
+                              <%- include('modal',{isEmpty: isEmpty , playlist_names: playlist_names ,album_id:
+                                album_id})%>
+                                <% } %>
+
+                                  <div class="card-body">
+                                    <a href="/album?id=<%=album_id%>" class="album_link block-inline">
+                                      <h5 class="card-title">
+                                        <%= title %>
+                                      </h5>
+                                      <p class="card-text">
+                                        <%= artist_name %>
+                                      </p>
+                                    </a>
+                                  </div>
+                          </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                  </div>
+                  <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('footer')%>

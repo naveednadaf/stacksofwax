@@ -1,0 +1,37 @@
+<%- include('header')%>
+    <%- include('navbar', {loggedIn: loggedIn}) %>
+    <div class="px-5 playlist_containter">
+    <section class="px-5 py-5">
+        <h1 class="pb-3"> My Collection</h1>
+        <div class="row">
+            <% playlists.forEach((item) => { %>
+                <div class="card-containter col-md-3 mb-3">
+                    <div class="card h-100 card-small">
+                        <img src="<%= item.coverUrl %>" class="card-img-top" alt="...">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <form method="POST" action="/delete_playlist">
+                                <input type="hidden" name="playlist_id"
+                                    value="<%= item.playlist_id %>">
+                                <button type="submit" class="btn p-0 m-0">
+                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                        <a href="/playlist?id=<%=item.playlist_id%>" class="album_link block-inline">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= item.playlist_name %>
+                            </h5>
+                            <p class="card-text">Collection | <%= item.user_name %></p>
+                        </div> </a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+</div>
+    
+    
+<%- include('footer')%>

@@ -1,0 +1,271 @@
+<%- include('header')%>
+    <%- include('navbar', {loggedIn: loggedIn}) %>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-1">
+                    <!-- Left column -->
+                    <!-- Add your content here -->
+                </div>
+                <% if((playlistInfo[0].privacy===1 && sess_user_id===playlistInfo[0].user_id) ||
+                    (playlistInfo[0].privacy===0) ) { %>
+                    <div class="col-sm-10">
+                        <!-- Middle column -->
+                        <div class="row playlist_row  mt-4 pt-5">
+                            <div class="col-auto paylist-cover">
+                                <div class="d-flex justify-content-center ">
+                                    <img src="<%=albumInfo[0].coverUrl%>" alt="..." class="img-rounded playlist_image">
+                                </div>
+                            </div>
+                            <div class="col-7 playlist_info">
+                                <p class="m-0">Collection</p>
+                                <div class="d-flex align-items-center">
+
+                                    <h4>
+                                        <%= playlistInfo[0].playlist_name%>
+                                    </h4>
+                                    <button class=" btn btn-sm btn-outline-dark rounded-pill mx-3 btn-custom">
+                                        <% if(playlistInfo[0].privacy===1) { %>
+                                            <p class="m-0">Private</p>
+                                            <% } else { %>
+                                                <p class="m-0">Public</p>
+                                                <% } %>
+                                    </button>
+                                </div>
+                                <p class="px-1">By
+                                    <%= playlistInfo[0].user_name%>
+                                </p>
+                                <% if(playlistInfo[0].playlist_desc !=null) { %>
+                                    <p class="px-1">
+                                        <%= playlistInfo[0].playlist_desc%>
+                                    </p>
+                                    <% } %>
+                                        <% if(sess_user_id !==undefined && sess_user_id===playlistInfo[0].user_id ) { %>
+                                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal"
+                                                data-bs-target="#editPlaylistModal">Edit Playlist</button>
+                                            <div class="modal fade" id="editPlaylistModal" tabindex="-1"
+                                                aria-labelledby="editPlaylistModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editPlaylistModalLabel">Edit
+                                                                Playlist</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="POST"
+                                                                action="/playlist/edit/<%= playlistInfo[0].playlist_id %>">
+                                                                <div class="mb-3">
+                                                                    <label for="playlistName"
+                                                                        class="form-label">Playlist
+                                                                        Name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="playlistName" name="playlistName"
+                                                                        value="<%= playlistInfo[0].playlist_name %>">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="playlistDesc"
+                                                                        class="form-label">Playlist
+                                                                        Description</label>
+                                                                    <textarea class="form-control" id="playlistDesc"
+                                                                        name="playlistDesc"
+                                                                        rows="3"><%= playlistInfo[0].playlist_desc %></textarea>
+                                                                </div>
+                                                                <div class="privacy px-3 pb-3">
+                                                                    <label for="privacy">Privacy*</label>
+                                                                    <select class="form-select" name="privacy" required>
+                                                                        <option value="0">Public</option>
+                                                                        <option value="1">Private</option>
+                                                                    </select>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Save
+                                                                    Changes</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <% } %>
+                            </div>
+                        </div>
+                        <div class="row pt-5">
+                            <br></br>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% albumInfo.forEach ((item)=>{ %>
+                                            <tr>
+                                                <td class="thumbnail rounded float-left" alt="...">
+                                                    <a href="/album?id=<%=item.album_id%>"
+                                                        class="album_link block-inline">
+                                                        <img src="<%=item.coverUrl%>">
+                                                    </a>
+                                                </td>
+                                                <td class="font-weight-bold align-middle float-left">
+                                                    <a href="/album?id=<%=item.album_id%>"
+                                                        class="album_link block-inline">
+                                                        <%=item.album_title%>
+                                                    </a>
+                                                </td>
+                                                <td class="align-middle float-left">
+                                                    <a href="/album?id=<%=item.album_id%>"
+                                                        class="album_link block-inline">
+                                                        <%=item.artists%>
+                                                    </a>
+                                                </td>
+                                                <% if(sess_user_id !==undefined &&
+                                                    sess_user_id===playlistInfo[0].user_id ) { %>
+                                                    <td class="align-middle float-left">
+                                                        <div class="d-flex block-inline">
+                                                            <div class="px-2">
+                                                                <form method="POST" action="/delete">
+                                                                    <input type="hidden" name="album_id"
+                                                                        value="<%= item.album_id %>">
+                                                                    <input type="hidden" name="playlist_id"
+                                                                        value="<%= playlistInfo[0].playlist_id %>">
+                                                                    <button type="submit" class="btn p-0 m-0">
+                                                                        <i class="fa fa-regular fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            <div>
+                                                                <button type="button" class="btn btn-xs"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal_<%= item.album_id %>"
+                                                                    data-album-id="<%= item.album_id %>">
+                                                                    <i class="fa-solid fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                            <%- include('modal',{isEmpty: isEmpty , playlist_names:
+                                                                playlist_names , album_id: item.album_id})%>
+                                                        </div>
+                                                    </td>
+                                                    <% } %>
+                                            </tr>
+                                            <% }) %>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Pagination links -->
+                            <% if (albumInfo.length> 0) { %>
+                                <div class=" page pt-2 d-flex justify-content-center">
+                                    <nav aria-label="Album pages ">
+                                        <ul class="pagination">
+                                            <% if (page> 1) { %>
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                        href="?id=<%= playlistInfo[0].playlist_id %>&page=<%= page - 1 %>"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <% } %>
+                                                    <% for (let i=1; i <=Math.ceil(albumCount / pageSize); i++) { %>
+                                                        <li class="page-item <%= (i === page) ? 'active' : '' %>">
+                                                            <a class="page-link"
+                                                                href="?id=<%= playlistInfo[0].playlist_id %>&page=<%= i %>">
+                                                                <%= i %>
+                                                            </a>
+                                                        </li>
+                                                        <% } %>
+
+                                                            <% if (page < Math.ceil(albumCount / pageSize)) { %>
+                                                                <li class="page-item">
+                                                                    <a class="page-link"
+                                                                        href="?id=<%= playlistInfo[0].playlist_id %>&page=<%= page + 1 %>"
+                                                                        aria-label="Next">
+                                                                        <span aria-hidden="true">&raquo;</span>
+                                                                        <span class="sr-only">Next</span>
+                                                                    </a>
+                                                                </li>
+                                                                <% } %>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <% } %>
+                        </div>
+                        <div class="like_comment container">
+                            <div class="row mb-5">
+                                <!-- Comment Section -->
+                                <div class="card mt-3 pt-2">
+                                    <form method="POST" action="/playlist_rate">
+                                        <div class="card-body d-flex block-inline align-items-center">
+                                            <input type="hidden" name="playlist_id"
+                                                value="<%= playlistInfo[0].playlist_id %>">
+                                            <input type="hidden" name="user_id" value="<%= sess_user_id %>">
+                                            <button type="submit" name="action" value="like" class="btn">
+                                                <i class="fa-solid fa-heart"></i>
+                                            </button>
+                                            <p class="m-0">
+                                                <%=vote%>
+                                            </p>
+                                        </div>
+                                    </form>
+                                    <hr class="m-0">
+                                    <div class="card-body p-0 px-2 ">
+                                        <h5 class="card-title pt-3">Comments</h5>
+                                        <% comments.forEach((item)=>{ %>
+                                            <div class="card mt-2">
+                                                <div class="d-flex align-items-center p-2">
+                                                    <i class="fa-solid fa-circle-user"></i>
+                                                    <p class="px-1 m-0">
+                                                        <%=item.user_name %>
+                                                    </p>
+                                                    <label class="blockquote-footer m-0">
+                                                        <%= item.comment_date %>
+                                                    </label>
+                                                </div>
+
+                                                <p class="p-2 m-0">
+                                                    <%= item.comment_desc %>
+                                                </p>
+                                            </div>
+                                            <% }) %>
+
+                                                <form method="POST" action="/playlist_comment">
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="playlist_id"
+                                                            value="<%= playlistInfo[0].playlist_id %>">
+                                                        <input type="hidden" name="user_id" value="<%= sess_user_id %>">
+                                                        <label for="comment-message" class="form-label">Add a
+                                                            comment</label>
+                                                        <textarea class="form-control" id="comment-message" rows="3"
+                                                            name="comment" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary mb-3">Comment</button>
+                                                </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <!-- Right column -->
+                        <!-- Add your content here -->
+                    </div>
+            </div>
+            <% } else { %>
+                <div class="col-sm-10">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Error: 404 Not Found</h4>
+                        <p>Sorry, the page you are looking for may not exist, or the URL you entered may be
+                            incorrect. So either, this playlist is private and can only be accessed by
+                            authorised users.
+                        </p>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+        <%- include('footer')%>
